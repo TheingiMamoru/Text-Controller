@@ -38,6 +38,21 @@ const listen = () => {
     recognition.lang = "en-US";
     recognition.start();
 
+    recognition.addEventListener("start",() => {
+        speakToText.classList.add("voice-active");
+        speakToText.innerHTML = `
+        <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        `
+    });
+    recognition.addEventListener("end",() => {
+        speakToText.classList.remove("voice-active");
+        speakToText.innerHTML = `
+        <i  class="fa-solid fa-microphone "></i>
+        `
+    });
+
     // when a speech is returned
     recognition.onresult = (event) => {
         console.log(event.results[0][0].transcript);
@@ -63,7 +78,7 @@ fontFamily.addEventListener("change", e => {
 text.addEventListener("keyup", event => {
     // console.log(text.value);
     // console.log(event.target.value);
-    output.innerText += text.value;
+    output.innerText = text.value;
 
     //ရိုက်တဲ့ စာလုံးအရေအတွက်ကို count မှာ လာပြမယ်
     // console.log(event.target.value.length);
